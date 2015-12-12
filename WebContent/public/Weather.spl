@@ -1,0 +1,47 @@
+use com.ibm.streamsx.inet::InetSource ; // dependency is part of streams product 
+use com.ibm.streamsx.inet.http::HTTPPost ; // dependency is part of streams product 
+use spl.utility::* ;
+
+composite Weather
+{
+	graph
+		stream<rstring rawObservation> WeatherinputStream_out0 = InetSource()
+		{
+			param
+				URIList : [
+					"https://query.yahooapis.com/v1/public/yql?q=select%20wind%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22chicago%2C%20il%22)&format=xml&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+					] ;
+				incrementalFetch : false ;
+				fetchInterval : 1.0l ;
+				punctPerFetch : true ;
+				unconditionalFetch : true ;
+		}
+
+		stream<float64 Speed, float64 Direction, float64 Chill> windParsed = XMLParse(WeatherinputStream_out0)
+		{
+			param
+				trigger : "/query/results/channel/yweather:wind" ;
+				parsing : permissive ; // log and ignore errors
+
+			output
+				windParsed : // keep only the attributes we are interested in
+				Speed = (float64) XPath("@speed"),  Direction = (float64) XPath("@direction"), Chill = (float64) XPath("@chill");
+		}
+
+		(stream<float64 speed, float64 direction, float64 chill> Aggregate_3_out0) as Aggregate_3 = Aggregate(windParsed as
+			inputStream)
+		{
+			window
+				inputStream : tumbling, count(5) ;
+			output
+				Aggregate_3_out0 : speed =  Average(Speed), direction =  Average(Direction), chill = Max(Chill);
+		}
+		
+		() as windHttpOutput = HTTPPost(Aggregate_3_out0)
+		{	
+			param
+				headerContentType : "application/json" ;
+				url :((rstring) "http://helloworld-pt.eu-gb.mybluemix.net/api/jax-rs/addLine") ;
+		}
+}
+

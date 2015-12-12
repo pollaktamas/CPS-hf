@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Chichago wind infomations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.5.1/rickshaw.min.js"></script>
+    
+    <style>
+    #chart_container {
+        position: relative;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    #chart {
+            position: relative;
+            left: 40px;
+    }
+    #y_axis {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+    }
+    
+    #chart_container2 {
+        position: relative;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    #chartChill {
+            position: relative;
+            left: 40px;
+    }
+    #y_axis2 {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40px;
+    }
+    </style>
+	
+</head>
+<body>
+  <div><center><h1>Chichago wind infomations</h1></center></div>
+  <div><center><h2>Chart representing wind speed and direction</h2></center></div></br>
+    
+  <div id="chart_container">
+      <div id="y_axis"></div>
+      <div id="chart"></div> 
+      <div style="margin-left:20px" id="x_axis"></div>
+      <div style="margin-left:20px" id="previewSlider"></div>
+        <br>
+      <div style="margin-bottom:10px; margin-left:20px" id="mylegend"></div>
+  </div>
+  <br><br>
+  <div><center><h2>Chart representing wind chill</h2></center></div></br>
+  
+  <div id="chart_container2">
+      <div id="y_axis2"></div>
+      <div id="chartChill"></div> 
+      <div style="margin-left:20px" id="xaxis2"></div>
+        <br>
+      <div style="margin-bottom:10px; margin-left:20px" id="mylegend2"></div>
+  </div>
+    
+  <script type="text/javascript" src="index.js"></script>
+
+</body>
+</html>
